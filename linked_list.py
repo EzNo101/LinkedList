@@ -3,17 +3,23 @@ from node import Node
 class LinkedList:
     def __init__(self):
         self.head = None
+        self.tail = None
+
 
     # Method for adding node to the list
     def append(self, data):
         new_node = Node(data)
         cur_node = self.head
+
+        #Якщо в списку один нод, то він буде і хедом, і тейлом
         if cur_node == None:
             self.head = new_node
+            self.tail = new_node
             return
-        while cur_node.get_next() != None:
-            cur_node = cur_node.get_next()
-        cur_node.set_next(new_node)
+        else:
+            # ми продовжуємо перебирати список, доки не досягнемо останнього вузла, і додаємо новий вузол після останнього вузла, який ми знайшли.
+            self.tail.set_next(new_node)
+            self.tail = new_node
 
     # Method to print a list
     def show(self):
@@ -46,6 +52,7 @@ class LinkedList:
         while cur_node.get_next().get_next() != None:
             cur_node = cur_node.get_next()
         cur_node.set_next(None)
+        self.tail = cur_node
 
     # Method to remove the first node
     def remove_front(self):
@@ -93,6 +100,8 @@ class LinkedList:
                 the_node_to_remove = cur_node.get_next()
                 the_node_after_removed = the_node_to_remove.get_next()
                 cur_node.set_next(the_node_after_removed)
+                if cur_node.get_next() == None:
+                    self.tail = cur_node
                 return
             count += 1
             cur_node = cur_node.get_next()
@@ -108,4 +117,5 @@ class LinkedList:
             cur_node.set_next(prev)
             prev = cur_node
             cur_node = next
+        self.tail = self.head
         self.head = prev
